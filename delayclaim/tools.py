@@ -102,6 +102,11 @@ def _money(amount: int, currency: str) -> str:
     return f"{symbol}{amount:,}"
 
 
+def _total(amount: int, currency: str) -> str:
+    """Same figure in words-and-symbols, so a letter never mixes formats."""
+    return f"{_money(amount, currency)} ({amount:,} {currency})"
+
+
 def render_letter(
     *,
     assessment: Assessment,
@@ -147,8 +152,8 @@ def render_letter(
             "held that a passenger who reaches the final destination three hours or more after "
             "the scheduled arrival time is entitled to the compensation in Article 7. I therefore "
             f"claim {_money(assessment.per_passenger, assessment.currency)} per passenger, "
-            f"{assessment.passengers} passenger(s) in total "
-            f"({assessment.amount:,} {assessment.currency}).",
+            f"{assessment.passengers} passenger(s) in total: "
+            f"{_total(assessment.amount, assessment.currency)}.",
         ]
     else:
         lines += [
@@ -156,8 +161,8 @@ def render_letter(
             "was notified at least fourteen days before departure, or where re-routing brought me "
             "to my final destination within the applicable window. Neither exception applies here. "
             f"I therefore claim {_money(assessment.per_passenger, assessment.currency)} per "
-            f"passenger, {assessment.passengers} passenger(s) in total "
-            f"({assessment.amount:,} {assessment.currency}).",
+            f"passenger, {assessment.passengers} passenger(s) in total: "
+            f"{_total(assessment.amount, assessment.currency)}.",
         ]
     lines += [
         "",
